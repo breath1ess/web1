@@ -1,139 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Kollus Player V3 for HTML5</title>
-        <meta name="description" content="" />
-        <meta name="author" content="Catenoid.inc" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <link rel="stylesheet" href="css/kollusPlayer-3.0.27.min.css">
-        <script src="../common/js/lib/jquery-1.9.1.min.js"></script>
-        <script src="../common/js/lib/jquery.xdomainrequest.min.js"></script>
-        <script src="../common/js/lib/TweenMax.min.js"></script>
-        <script src="../common/js/lib/json2.min.js"></script>
-        <script src="../common/js/lib/moment.min.js"></script>
-        <script src="../common/js/lib/platform.min.js"></script>
-        <script src="../common/js/configuration.js"></script>
-        <script src="../common/js/language-pack.js"></script>
-        <script src="../common/js/agentcheck.js"></script>
-        <!--[if gte IE 9]><!-->
-            <script src="../common/js/lib/kollus.exclusiveplayer.v3.videogateway-controllee.min.js"></script>
-        <!--<![endif]-->
-        <script src="js/kollusPlayer-3.0.27.min.js"></script>
-    </head>
-    <body>
-        <div id="container">
-            <video id="kollusPlayer" class="video-js vjs-default-skin kollus-default"></video>
-            <script>
-                $(document).ready(function() {
+<head>
 
-                    var Player = window.Kollus.KollusHTML5Player;
-                    //var Player = Modules.Player;
+  <meta charset="utf-8">
+  <title> web-information </title>
 
-                    /* ==========================================================================
-                    * KollusPlayer API
-                    * --------------------------------------------------------------------------
-                    * - window.Kollus.KollusHTML5Player.Options({...}) : 재생 관련 옵션 설정
-                    * - window.Kollus.KollusHTML5Player.StartPlay(type) : 재생시작 (type: stream, download, independant)
-                    * - window.Kollus.KollusHTML5Player.StartDownload() : 다운로드 시작
-                    * ==========================================================================
-                    * KollusPlayer options
-                    * --------------------------------------------------------------------------
-                    * - mediaInfo : SinglePlayer(Non Agent) with MediaInfo Object @mediaInfo
-                    * - singleURL : SinglePlayer(Non Agent) with Direct Mediafile URL @string
-                    * - downloadInfo : AgentPlayer type download content play @index
-                    * - streamingInfo : AgentPlayer type streaming content play @mediaURL
-                    * ========================================================================== */
+</head>
 
-                    try {
-                        // postmessage 라이브러리 동기화를 위해 먼저 객체를 생성함.
-                        var controllee = new Kollus.ExclusivePlayerV3VideogatewayControllee(Player);
-                        controllee.init();
-                    } catch (e) {
-                        // 발생 가능한 예외
-                        // 1. PostMessage 사용 불가
-                    }
+<body>
+<h1>WEB</h1>
+<ol>
+  <li><a href="1.html" target="_blank"> html</li>
+  <li><a href="2.html" target="_blank"> css</li>
+  <li><a href="3.html" target="_blank"> java</li>
+</ol>
 
-                    //Agent관련 기본 정보를 넘겨준다.
-                    Player.Options({
-                        agentInfo: {
-                            agentVersionCheckURL: 'http://api.kr.kollus.com/0/account/version_for_kollus',
-                            agentExecuteURL: 'kollus://api.kr.kollus.com/0/account/version_for_kollus', //kollus://run
-                            agentUpdateURL: 'kollus://api.kr.kollus.com/0/account/version_for_kollus',
-                            agentInstallURL: 'http://v.kr.kollus.com/pc_player_install/agent'
-                        },
-                        eventCallback: function(player) {
-                            if (typeof controllee !== 'undefined') {
-                                controllee.register_event_listeners(player);
-                            }
-                        }
-                    });
+<ul>
+  <li>leeyounggwang</li>
+  <li>kangyungu</li>
+  <li>anjunyong</li>
+</ul>
 
+<h2><a href="https://www.w3.org/" target="_blank" title="link"> HTML이란 무엇인가</a></h2>
 
-                    /* ==========================================================================
-                    * External Options
-                    * -------------------------------------------------------------------------- */
+hello web hypertwxt markup LAnguage
+(html)is the standerd <strong>creating
+<u>web</u> page</strong> and web applications.
+<br><br><br>
 
-                    //EventCallback Function이 있으면 넘겨준다.
-                    if (typeof window.queryString('eventCallbackFn') !== 'undefined') {
-                        Player.Options({
-                            eventCallback: eventCallbackFn
-                        });
-                    }
-
-                    //options에 mediaInfo를 넘겨주면 Agent Player 타입이 아닌 Single Player 타입으로 설정된다.
-                    /*kollusPlayer.options({
-                        mediaInfo: "media info string value..."
-                    });*/
-
-                    //options에 downloadInfo를 넘겨주면 Agent Player 타입의 download play를 실행한다.
-                    if (typeof window.queryString('index') !== 'undefined') {
-                        Player.Options({
-                            downloadInfo: {
-                                index: window.queryString('index')
-                            }
-                        });
-                    }
-
-                    //options에 streamingInfo 넘겨주면 Agent Player 타입의 streaming play를 실행한다.
-                    if (typeof window.queryString('mediaURL') !== 'undefined') {
-                        Player.Options({
-                            streamingInfo: {
-                                mediaURL: window.queryString('mediaURL')
-                            }
-                        });
-                    }
-
-                    //options에 singlePlayInfo 넘겨주면 비 Agent Player 타입의 single play를 실행한다.
-                    if (typeof window.queryString('singleURL') !== 'undefined') {
-                        Player.Options({
-                            singleURL: {
-                                singleURL: window.queryString('singleURL')
-                            }
-                        });
-                    }
-
-
-                    /* ==========================================================================
-                    * Player API
-                    * -------------------------------------------------------------------------- */
-
-                    //KollusPlayer를 초기화 시켜준다.
-                    //download 쿼리스트링 옵션이 있는 경우 다운로드를 먼저 실행.
-                    if (window.objSearch(window.queryString(), 'download')) {
-                        //Download 시작.
-                        Player.StartDownload();
-                    } else {
-                        //mediaOpenType QueryString이 있는 경우 'stream'/'download'/'independant'를 파라미터로 넘겨준다.
-                        if (typeof window.queryString('mediaOpenType') !== 'undefined') {
-                            Player.StartPlay(window.queryString('mediaOpenType'));
-                        } else {
-                            Player.StartPlay('stream');
-                        }
-                    }
-                });
-            </script>
-        </div>
-    </body>
+e can refer to:
+<p>obweb (disambiguation)
+Spider Web (disambiguation)
+Interdigital webbing, the presence of membranes of skin between the digits
+Webbed toes
+Webb (disambiguation)
+Webbing, a strong woven fabric
+WWW (disambiguation)
+All pages with titles containing webs
+All pages with titles containing web
+All pages with titles beginning with web</p>
+</body>
 </html>
